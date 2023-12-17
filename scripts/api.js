@@ -2,7 +2,7 @@
 const options = {
 	method: 'GET',
 	headers: {
-		'X-RapidAPI-Key': '1e2136d40bmshe60fd9f92baf95bp1b932ejsnaea6227d21e9',
+		// 'X-RapidAPI-Key': 'gizli kalacak',
 		'X-RapidAPI-Host': 'twitter-api45.p.rapidapi.com'
 	}
 };
