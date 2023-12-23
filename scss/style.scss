@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap');
 @import "auth";
 @import "responsive";
+@import "loader";
 *{
     margin: 0;
     padding: 0;
@@ -38,13 +39,293 @@ button:hover{
 }
 // sol kısım
 nav{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
+    @include sm{
+        align-items: center !important;
+    }
+
+    @media (min-width:1000px){
+        align-items: end;
+        margin-right: 50px;
+    }
+
+    ul{
+        display: flex;
+        flex-direction: column;
+        padding: 20px 10px;
+
+        @include md {
+            align-items: end;
+            padding: 10px 5px !important;
+        }
+
+        li{
+            display: flex;
+            font-size: 19px;
+            gap: 10px;
+            padding: 20px 10px;
+            margin: 5px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all .4s;
+
+            @include sm{
+                padding: 10px 5px;
+            }
+            &:hover{
+                background-color: rgb(60, 60, 60);
+            }
+            &:last-child{
+                background-color: $blue;
+                padding: 10px 10px;
+
+                @include sm{
+                    padding: 10px 5px;
+                }
+            }
+        }
+
+        img{
+            width: 80px;
+            @include md{
+                width: 40px;
+            }
+        }
+
+        a{
+            color: white;
+        }
+
+        i{
+            @include md{
+                font-size: 23px;
+            }
+        }
+
+        span{
+            white-space: nowrap;
+            @include md{
+                display: none;
+            }
+        }
+    }
+
+    .user-info{
+        display: flex;
+        gap: 10px;
+        margin: 15px 0;
+        padding: 0 10px;
+
+        @include md{
+            flex-direction: column;
+            align-items: end; 
+        }
+        img{
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+
+            @include md{
+                width: 50px;
+                height: 50px;
+            }
+        }
+        button{
+            font-size: 16px;
+            padding: 4px 10px;
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+            @include md{
+                font-size: 18px;
+                padding: 6px 16px;
+            }
+        }
+
+        span,
+        p{
+            white-space: nowrap;
+            @include md{
+                display: none;
+            }
+        }
+    }
 }
 //orta kısım
 main{
     height: 100vh;
     border: 1px solid rgb(60, 60, 60);
     overflow: auto;
+
+    header{
+        padding: 20px;
+        font-weight: bold;
+        font-size: 21px;
+        border-bottom: 1px solid rgb(60, 60, 60);
+    }
+
+    #post-tweet{
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        border-bottom: 1px solid rgb(60, 60, 60);
+
+        img{
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .input-area{
+            width: 100%;
+            input{
+                width: 100%;
+                background-color: transparent;
+                border: none;
+                outline: none;
+                color: white;
+                padding: 10px 20px;
+                font-size: 20px;
+            }
+
+            .button-area{
+                display: flex;
+                justify-content: end;
+
+                button{
+                    border-radius: 60px;
+                    background-color: $blue;
+                    color: white;
+                    font-size: 15px;
+                    padding: 10px 16px;
+                }
+            }
+        }
+    }
+    &::-webkit-scrollbar{
+        background: black;
+        width: 5px;
+    }
+    &::-webkit-scrollbar-thumb{
+        background: gray;
+        border-radius: 10px;
+    }
+
+}
+
+
+.tweets-area{
+    display: flex;
+    flex-direction: column;
+}
+.tweet{
+    display: flex;
+    gap: 15px;
+    padding: 10px;
+    border-bottom: 1px solid rgb(60, 60, 60);
+
+    #user-img{
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+
+        @include sm{
+            display: none;
+        }
+    }
+
+    #mobile-img{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: none;
+        object-fit: cover;
+        @include sm{
+            display: block;
+            object-fit: cover;
+
+        }
+    }
+
+    .body{
+        width: 100%;
+        margin-top: 10px;
+        
+        .user{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+
+            a{
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                cursor: pointer;
+                color: white;
+
+                p{
+                    color: gray;
+                    @include sm{
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+
+        .content{
+            margin-top: 10px;
+            img,
+            video{
+                margin-top: 5px;
+                width: 100%;
+                object-fit: cover;
+                max-height: 600px;
+                border-radius: 10px;
+            }
+        }
+    }
+}
+
+.tweet .buttons{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    button{
+        background: none;
+        color: gray;
+        font-weight: bold;
+
+        @include sm{
+            font-size: 14px;
+        }
+
+        &:nth-child(1){
+            &:hover{
+                color: $blue;
+            }
+        }
+        &:nth-child(2){
+            &:hover{
+                color: green;
+            }
+        }
+        &:nth-child(3){
+            &:hover{
+                color: red;
+            }
+        }
+        &:nth-child(4){
+            &:hover{
+                color: $blue;
+            }
+        }
+    }
 }
 // sağ kısım
 aside{

@@ -2,7 +2,7 @@
 const options = {
 	method: 'GET',
 	headers: {
-		// 'X-RapidAPI-Key': 'gizli kalacak',
+		'X-RapidAPI-Key': '1e2136d40bmshe60fd9f92baf95bp1b932ejsnaea6227d21e9',
 		'X-RapidAPI-Host': 'twitter-api45.p.rapidapi.com'
 	}
 };
@@ -19,7 +19,17 @@ export default class API {
         return data;
     }
 
-    // tweetleri alır
-    static getTweets() {}
+    // parametre olarak gönderdiğimiz endpoint'deki verileri alır
+    static async getData(endpoint) {
+        try{
+
+        
+        // parametre olarak gelen uç noktaya istek at
+        const res = await fetch(`https://twitter-api45.p.rapidapi.com${endpoint}`, options);
+        // gelen veriyi işle ve döndür
+        return await res.json();
+        }catch(err){
+            console.log("verileri alırken hata", err);
+        }
+    }
 }
-API.getUser();
