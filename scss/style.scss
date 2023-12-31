@@ -2,6 +2,7 @@
 @import "auth";
 @import "responsive";
 @import "loader";
+@import "user";
 *{
     margin: 0;
     padding: 0;
@@ -279,6 +280,7 @@ main{
 
         .content{
             margin-top: 10px;
+            color: white;
             img,
             video{
                 margin-top: 5px;
@@ -329,7 +331,107 @@ main{
 }
 // sağ kısım
 aside{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 50px;
     @include md {
         display: none;
+    }
+    form{
+        background-color: rgb(40, 40, 40);
+        padding: 5px 15px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        border-radius: 40px;
+        color: gray;
+
+        input{
+            background: none;
+            border: none;
+            outline: none;
+            color: rgba(197, 196, 196);
+        }
+    }
+}
+
+// detay sayfası
+
+.nav{
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    i{
+        font-size: 21px;
+        width: 33px;
+        height: 33px;
+        cursor: pointer;
+        text-align: center;
+        border-radius: 50%;
+        transition: all .3s;
+        &:hover{
+            background-color: rgb(80, 80, 80);
+        }
+    }
+    h4{
+        font-size: 20px;
+    }
+}
+
+.detail-tweet{
+    padding: 20px;
+
+    .user img{
+        border-radius: 50%;
+    }
+
+    .content{
+        margin-top: 30px !important;
+    }
+
+    .info{
+        display: flex;
+        gap: 10px;
+        margin-top: 30px;
+
+        p:nth-child(1){
+            color: gray;
+        }
+        p:nth-child(2){
+            display: flex;
+            gap: 4px;
+            span:nth-child(2){
+                color: gray;
+            }
+        }
+    }
+}
+#comment-form{
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    gap: 10px;
+
+    img{
+        border-radius: 50%;
+    }
+
+    input{
+        flex: 1;
+        background-color: black;
+        font-size: 20px;
+        color: white;
+        border: none;
+        outline: none;
+    }
+    button{
+        background-color: $blue;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 50px;
+
     }
 }

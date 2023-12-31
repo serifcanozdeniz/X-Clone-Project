@@ -5,6 +5,7 @@ export const ele = {
     tweetsArea: document.querySelector(".tweets-area"),
     logoutBtn: document.querySelector("#logout-btn"),
     main: document.querySelector("main"),
+    searchForm: document.querySelector("aside form"),
 };
 
 
@@ -20,6 +21,8 @@ export const renderUserInfo = (user) =>{
 
 // tweetin medya içeriğini alacak ve içeriğe göre html oluşturacak
 const getMedia = (media) => {
+    // media çeriği yoksa
+    if(!media) return "";
     // fotoğraf varsa
     if(media.photo){
         console.log(media);
@@ -30,29 +33,27 @@ const getMedia = (media) => {
         const url = media.video[0].variants[0].url
         return `<video controls src="${url}"/>`;
     }
-    // media çeriği yoksa
-    return '';
 }
 
 // tweetleri ekrana basar
 // 1) data: tweetler
 // 2) outlet: hangi elementn içerisine ekrana göndereceğiz
-export const renderTimeline = (data, outlet) => {
+export const renderTimeline = (data, outlet, user) => {
 
-    console.log(data.timeline);
+    console.log(data.timeline[1]);
     // her bir tweet için outlet alanına bir tweet div'i bas
     outlet.innerHTML = data.timeline.map((tweet) => `
     <div class="tweet">
-    <img id="user-img" src="${tweet.author ? tweet.author.avatar : "/images/defaultt.png"}">
+    <img id="user-img" src="${tweet[user] ? tweet[user].avatar : "/images/defaultt.png"}">
     <div class="body">
         <div class="user">
         ${
-            tweet.author
+            tweet[user]
             ? `
-            <a href="#">
-            <img id="mobile-img" src="${tweet.author?.avatar}">
-            <b>${tweet.author?.name}</b>
-            <p>@${tweet.author?.screen_name}</p>
+        <a href="?page=user&q=${tweet[user].screen_name}">
+            <img id="mobile-img" src="${tweet[user]?.avatar}"/>
+            <b>${tweet[user]?.name}</b>
+            <p>@${tweet[user]?.screen_name}</p>
             <p>${moment(tweet.created_at).fromNow()}</p>
         </a>
             `
@@ -62,10 +63,10 @@ export const renderTimeline = (data, outlet) => {
             <i class="bi bi-three-dots"></i>
         </div>
 
-        <div class="content">
+        <a href="?page=status&q=${tweet.tweet_id}" class="content">
             <p>${tweet.text}</p>
             ${getMedia(tweet.media)}
-        </div>
+        </a>
 
         <div class="buttons">
             <button>
@@ -109,3 +110,224 @@ export const renderLoader = (outlet) => {
   </div>
   `;
 };
+
+// detay sayfasının yükleniyorunu ekrana basar
+export const renderDetailLoader = (text) => {
+    ele.main.innerHTML = `
+        <div class="nav">
+        <i id="back-btn" class="bi bi-arrow-left"></i>
+        <h4>${text}</h4>
+        </div>
+
+        <div id="loader-wrapper">
+    <div class="loader">
+    <div class="loader-inner">
+      <div class="loader-block"></div>
+      <div class="loader-block"></div>
+      <div class="loader-block"></div>
+      <div class="loader-block"></div>
+      <div class="loader-block"></div>
+      <div class="loader-block"></div>
+      <div class="loader-block"></div>
+      <div class="loader-block"></div>
+    </div>
+  </div>
+  </div>
+    `;
+};
+
+// ekrana tweet detay sayfasını basar
+
+export const renderDetail = (tweet, user) => {
+    ele.main.innerHTML = `
+        <div class="nav">
+          <i id="back-btn" class="bi bi-arrow-left"></i>
+          <h4>Gönderi</h4>
+        </div>
+  
+        <div class="tweet detail-tweet">
+          <img
+            id="user-img"
+            src="${tweet.author.image}"
+          />
+  
+          <div class="body">
+            <div class="user">
+              <a href="?page=user&q=${tweet.author.screen_name}">
+                <img
+                  id="mobile-img"
+                  src="${tweet.author.image}"
+                />
+                <b>${tweet.author.name}</b>
+                <p>@${tweet.author.screen_name}</p>
+              </a>
+              <button>Takip Et</button>
+            </div>
+  
+            <div class="content">
+              <p>${tweet.text}</p>
+              ${getMedia(tweet.media)}
+            </div>
+  
+            <div class="info">
+              <p>${tweet.created_at}</p>
+              <p><span>${
+                tweet.views
+              }</span><span>Görüntülenme</span></p>
+            </div>
+  
+            <div class="buttons">
+              <button>
+                <i class="bi bi-chat"></i>
+                <span>${tweet.replies}</span>
+              </button>
+              <button>
+                <i class="bi bi-recycle"></i>
+                <span>${tweet.retweets}</span>
+              </button>
+              <button>
+                <i class="bi bi-heart"></i>
+                <span>${tweet.likes}</span>
+              </button>
+              <button>
+                <i class="bi bi-bookmark"></i>
+                <span>${tweet.bookmarks}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+  
+        <form id="comment-form">
+          <img
+            src="${user.avatar}"
+          />
+          <input placeholder="Yanıtını Gönder" type="text" />
+          <button>Yanıtla</button>
+        </form>
+    `;
+  };
+
+  // kullanıcı sayfasını ekrana basar
+  export const renderUser = (user)=>{
+    ele.main.innerHTML = `
+    <div class="user-page">
+            <!-- üst kısım -->
+            <div class="page-top">
+                <!-- nav -->
+                <div id="nav">
+                    <i id="back-btn" class="bi bi-arrow-left"></i>
+                    <div>
+                        <h3>${user.name}</h3>
+                        <p>
+                            <span>${Math.round(Math.random() * 3000)}</span>
+                            <span>Gönderi</span>
+                        </p>
+                    </div>
+                </div>
+                <!-- banner -->
+                <div class="banner">
+                    <img src="${user.header_image}">
+                    <img id="user-pp" src="${user.avatar}">
+                </div>
+
+                <!-- butonlar -->
+                <div class="buttons">
+                    <div class="icon">
+                        <i class="bi bi-three-dots"></i>
+                    </div>
+                    <div class="icon">
+                        <i class="bi bi-envelope"></i>
+                    </div>
+                    <button>Takip Et</button>
+
+                </div>
+
+                <!-- kullanıcı bilgileri -->
+                <div class="info">
+                    <h4>
+                        <span>${user.name}</span>
+                        ${user.blue_verified && '<i class="bi bi-patch-check-fill"></i>'}
+                        
+                    </h4>
+                    <p class="profile">@${user.profile}</p>
+
+                    <p class="description">
+                    ${user.desc}
+                    </p>
+
+                    <div>
+                        <a href="#">
+                            <span>${user.friends}</span>
+                            <span>Takip Edilen</span>
+                        </a>
+                        <a href="#">
+                            <span>${user.sub_count}</span>
+                            <span>Takipçi</span>
+                        </a>
+                    </div>
+                    
+                </div>
+
+                <!-- butonlar -->
+          <div class="radio-input">
+            <label>
+              <input
+                value="value-1"
+                name="value-radio"
+                id="value-1"
+                type="radio"
+                checked=""
+              />
+              <span>Gönderiler</span>
+            </label>
+            <label>
+              <input
+                value="value-2"
+                name="value-radio"
+                id="value-2"
+                type="radio"
+              />
+              <span>Yanıtlar</span>
+            </label>
+            <label>
+              <input
+                value="value-3"
+                name="value-radio"
+                id="value-3"
+                type="radio"
+              />
+              <span>Medya</span>
+            </label>
+            <label>
+              <input
+                value="value-3"
+                name="value-radio"
+                id="value-3"
+                type="radio"
+              />
+              <span>Beğeni</span>
+            </label>
+            <span class="selection"></span>
+          </div>
+            </div>
+
+            <!-- alt kısım -->
+            <div class="page-bottom">
+                <div id="loader-wrapper">
+                    <div class="loader">
+                    <div class="loader-inner">
+                      <div class="loader-block"></div>
+                      <div class="loader-block"></div>
+                      <div class="loader-block"></div>
+                      <div class="loader-block"></div>
+                      <div class="loader-block"></div>
+                      <div class="loader-block"></div>
+                      <div class="loader-block"></div>
+                      <div class="loader-block"></div>
+                    </div>
+                  </div>
+                  </div>
+            </div>
+        </div>
+    `
+  }
